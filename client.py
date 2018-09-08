@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect
 from firebase_admin import credentials, firestore
 from random import randint 
 
+
 #i made these!
 from forms import requestForm  
 
@@ -11,6 +12,8 @@ app = Flask(__name__)
 
 pins_queue = ["5000", "8080"]
 snack_queue = []
+location_queue = []
+name_queue = []
 
 @app.route('/')
 def index():
@@ -41,8 +44,10 @@ def call_robot():
 
         global snack_queue
         snack_queue.append(snack)
+        print("snack queue is:")
+        print(snack_queue)
 
-        return redirect("/temp")
+        return render_template("your_pin.html", pin=pin)
 
         #1. do something with name that interfaces with the LCD screen
         #2. location: idk what to do with this
@@ -59,7 +64,8 @@ def generate_pin():
 # user can enter pin
 @app.route('/num-pad')
 def num_pad():
-    return render_template("num_pad.html")
+    snack = snack_queue[0]
+    return render_template("num_pad.html", snack=snack)
 
 @app.route('/temp')
 def temp():
@@ -78,6 +84,8 @@ def check_pin():
             print("ayyyy lmao")
             pins_queue = pins_queue[1:]
             print(pins_queue)
+            snacks_queue = snacks_queue[1:]
+            print(snacks_queue)
             
             #code that tells the server to go to the next person lol
             return redirect("/temp")
