@@ -56,11 +56,14 @@ class Robot:
                 angle = math.atan((l - r)/ SENSOR_SEPARATION)
                 yield from turn_and_back_away(angle)
                 o_left = l > r
-                l, r, ok = self.move_forward(0.1)
+                l, r, ok = yield self.move_forward(0.1)
                 if not ok:
                     angle = math.atan((l - r)/ SENSOR_SEPARATION)
                     if o_left == l < r:
                         angle -= math.pi
                     yield from turn_and_back_away(angle)
+                    l, r, ok = yield self.move_forward(0.1)
+                    if not ok:
+                        raise Exception("Andrea, why'd you put it in a box?")
 
 
