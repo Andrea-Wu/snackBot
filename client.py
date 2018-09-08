@@ -1,15 +1,50 @@
 from flask import Flask, render_template, request, redirect
 from firebase_admin import credentials, firestore
+from random import randint 
+
+#i made these!
+from forms import requestForm  
 
 app = Flask(__name__)
 
 #init firebase stuff
 
 pins_queue = ["5000", "8080"]
+snack_queue = []
 
 @app.route('/')
 def index():
     return "hello :)"
+
+@app.route('/request-robot', methods=["GET", "POST"])
+def call_robot():
+    form = requestForm()
+    if request.method == "POST" and form.validate:
+        name = form.name.data
+        location = form.location.data
+        snack = form.snack.data
+
+        pin = generate_pin()
+        global pins_queue
+
+        #this is bad
+        while pin in pins_queue:
+            pin = generate_pin()
+            print("pin is")
+            print(pin)
+        return redirect("/temp")
+
+        #1. do something with name that interfaces with the LCD screen
+        #2. location: idk what to do with this
+        
+
+    return render_template("request_robot.html", form=form)
+
+
+
+def generate_pin():
+    return randint(10000,99999)
+
 
 # user can enter pin
 @app.route('/num-pad')
