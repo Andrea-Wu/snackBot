@@ -29,7 +29,7 @@ class Robot:
         return (1, -1, FULL_TURN_DURATION * deg / (2 * math.pi))
 
     def move_forward(self, d):
-        self.x, self.y = (self.x, self.y) + (math.cos(self.t) * d, math.sin(self.t) * d)
+        self.x, self.y = (self.x + math.cos(self.t) * d, self.y + math.sin(self.t) * d)
         if d > 0:
             return (1, 1, d * TIME_FOR_UNIT)
         else:
@@ -52,21 +52,21 @@ class Robot:
 
     def go_to_coord(self, new):
         while (self.x, self.y) != new:
-            yield from turn_and_back_away(math.atan((new[1] - self.y)/ (new[0] - self.x)))
+            yield from self.turn_and_back_away(math.atan((new[1] - self.y)/ (new[0] - self.x)))
             distance = math.sqrt((self.y - new[1]) ** 2 + (self.x - new[0]) ** 2)
             curr = time.time()
             l, r, ok = yield self.move_forward(distance)
             if not ok:
                 dt = time.time() - curr / (TIME_FOR_UNIT * distance)
                 angle = math.atan((l - r)/ SENSOR_SEPARATION)
-                yield from turn_and_back_away(angle)
+                yield from self.turn_and_back_away(angle)
                 o_left = l > r
                 l, r, ok = yield self.move_forward(0.1)
                 if not ok:
                     angle = math.atan((l - r)/ SENSOR_SEPARATION)
                     if o_left == l < r:
                         angle -= math.pi
-                    yield from turn_and_back_away(angle)
+                    yield from self.turn_and_back_away(angle)
                     l, r, ok = yield self.move_forward(0.1)
                     if not ok:
                         raise Exception("Andrea, why'd you put it in a box?")

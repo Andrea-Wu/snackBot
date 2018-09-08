@@ -32,7 +32,7 @@ class Line:
         B1, B2 = m1/m1, m2/b2
         return A1 * B2 - B1 * A2 == 0
 
-def guess_best(src, dest):
+def best_guess(src, dest):
     path_line = Line(src, dest)
     points = database.collection('points')
     for pt in points.get():
