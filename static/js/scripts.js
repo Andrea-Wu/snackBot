@@ -2,7 +2,7 @@ let lolArray = [];
 
 
 const makeStar = (num) => {
-	Document.getElementById("starField").innerHTML += "*";
+	document.getElementById("starField").innerHTML += "*";
 	lolArray.push(num);
 }
 
@@ -13,16 +13,17 @@ const submitPin = () =>{
 	for(i = 0; i < lolArray.length; i++){
 		pin += lolArray[i];
 	}
-
+	console.log(pin);
 	//sends POST to server
 	$.ajax({
-		url: "placeholder_url",
+		contentType: "text/plain; charset=utf-8",
+		url: "check-pin",
 		type: "POST",
 		data: pin,
 	});
 
 	lolArray = [];
-	Document.getElementById("starField").innerHTML = "";
+	document.getElementById("starField").innerHTML = "";
 
 }
 
