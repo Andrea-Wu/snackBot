@@ -18,13 +18,18 @@ def index():
 
 @app.route('/request-robot', methods=["GET", "POST"])
 def call_robot():
-    form = requestForm()
+    form = requestForm(request.form)
     if request.method == "POST" and form.validate:
         name = form.name.data
         location = form.location.data
         snack = form.snack.data
 
+        print(name)
+        print(location)
+        print(snack)
+
         pin = generate_pin()
+        print(pin)
         global pins_queue
 
         #this is bad
@@ -32,6 +37,11 @@ def call_robot():
             pin = generate_pin()
             print("pin is")
             print(pin)
+            pins_queue.append(pin)
+
+        global snack_queue
+        snack_queue.append(snack)
+
         return redirect("/temp")
 
         #1. do something with name that interfaces with the LCD screen
