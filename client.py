@@ -7,8 +7,6 @@ app = Flask(__name__)
 
 pins_queue = ["5000", "8080"]
 
-pin_= ""
-
 @app.route('/')
 def index():
     return "hello :)"
