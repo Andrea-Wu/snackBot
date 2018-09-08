@@ -9,11 +9,16 @@ SENSOR_SEPARATION = 1 #TODO: find this out
 import time
 import math
 
+from lines import best_guess
+
 class Robot:
     def __init__(self):
         self.x = 0
         self.y = 0
         self.t = 0
+
+    def location(self):
+        return (self.x, self.y)
 
     def turn(self, degs):
         # TODO: if both wheels can't run, make one 0.
@@ -66,4 +71,7 @@ class Robot:
                     if not ok:
                         raise Exception("Andrea, why'd you put it in a box?")
 
+    def use_best_guesses(self, place):
+        for dest in best_guess(self.location(), place):
+            yield from self.go_to_coord(dest)
 

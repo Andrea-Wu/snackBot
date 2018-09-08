@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+	</head>
+
+	<body>
+		<form action="" method="post">
+		{{form.csrf_token}}
+			<dl>
+				<span>Name</span>
+				{{form.name}}
+				<br>
+				<span>Location</span>
+				{{form.location}}
+				<br>
+				<span>Snack</span>
+				{{form.snack}}
+				<br>
+			</dl>
+			<input type="submit"></input>
+
+		</form>
+	</body>
+
+</html>
