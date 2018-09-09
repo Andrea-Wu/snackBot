@@ -9,10 +9,15 @@ def pt_lin_dist(pt, p1, p2):
     b = m * p1[0] - p1[1]
     a = 1 / b
     b = m / b
-    d = math.abs(pt[1] * a - pt[0] * b)/math.sqrt(a**2 + b**2)
+    d = math.abs(pt[0] * a - pt[1] * b)/math.sqrt(a**2 + b**2)
     return d #don't ask, I found it online
 
 class Line:
+    @staticmethod
+    def all_lines():
+        points = database.collection('points')
+        return list(points.get())
+
     def __init__(self, p1, p2):
         self.p1 = p1
         self.p2 = p2
@@ -29,8 +34,8 @@ class Line:
         b1 = m1 * self.p1[0] - self.p1[1]
         b2 = m2 * other.p1[0] - other.p1[1]
         A1, A2 = 1/b1,  1/b2
-        B1, B2 = m1/m1, m2/b2
-        return A1 * B2 - B1 * A2 == 0
+        B1, B2 = m1/b1, m2/b2
+        return A1 * B2 - B1 * A2 != 0
 
 def best_guess(src, dest):
     path_line = Line(src, dest)
