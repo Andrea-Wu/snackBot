@@ -11,13 +11,15 @@ def robo_upd():
         l = form.l.data
         r = form.r.data
         ok = form.ok.data
+        tpl = (l, r, ok)
         while pathq:
             try:
                 if curr_path is not None:
-                    return str(curr_path.send(l, r, ok))
+                    return str(curr_path.send(tpl))
                 else:
                     curr_path = android.use_best_guesses(pathq[0])
                     pathq = pathq[1:]
+                    tpl = None
             except StopIteration:
                 curr_path = None
         return "Done!"
